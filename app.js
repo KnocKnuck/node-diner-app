@@ -165,15 +165,34 @@ const deleteUser = (req, res) => {
 // app.post('/api/v1/tours', createTour)
 // app.patch('/api/v1/tours/:id', updateTour)
 // app.delete('/api/v1/tours/:id', deleteTour)
+const tourrRouter = express.Router();
+const userRouter = express.Router()
+
+tourrRouter
+  .route('/')
+  .get(getAllTours)
+  .post(createTour)
+
+tourrRouter
+  .route('/:id')
+  .get(getTour)
+  .patch(updateTour)
+  .delete(deleteTour)
 
 
-app.route('/api/v1/tours').get(getAllTours).post(createTour)
+userRouter
+  .route('/')
+  .get(getAllUsers)
+  .post(createUser)
 
-app.route('/api/v1/tours/:id').get(getTour).patch(updateTour).delete(deleteTour)
+userRouter
+  .route('/:id') 
+  .get(getUser)
+  .patch(updateUser)
+  .delete(deleteUser)
 
-
-app.route('/api/v1/users').get(getAllUsers).post(createUser)
-app.route('/api/v1/users/:id').get(getUser).patch(updateUser).delete(deleteUser)
+app.use('/api/v1/tours', tourrRouter);
+app.use('/api/v1/users', tourrRouter);
 
 //////////////////////////
 //        SERVER       //
