@@ -9,21 +9,26 @@ const app = express();
 ////////////////////////
 //     MIDDLEWARE     //
 ////////////////////////
-app.use(morgan('dev'));
+console.log(process.env.NODE_ENV)
+if(process.env.NODE_ENV === 'development') {
+  app.use(morgan('dev'));
+  
+}
 
 app.use(express.json());
+app.use(express.static(`${__dirname}/public`))
 
-// // Create own middleware 
-// app.use((req, res, next) => {
-//   console.log('Hello from middleware 👋🏽 ');
-//   next();
-// })
+// Create own middleware 
+app.use((req, res, next) => {
+  console.log('Hello from middleware 👋🏽 ');
+  next();
+})
 
-// // Middleware manipulate object date
-// app.use((req, res, next) => { 
-//   req.requestTime = new Date().toISOString();
-//   next();
-// })
+// Middleware manipulate object date
+app.use((req, res, next) => { 
+  req.requestTime = new Date().toISOString();
+  next();
+})
 
 //////////////////////////
 //        ROUTES       //
@@ -41,10 +46,5 @@ app.use('/api/v1/users', userRouter);
 //////////////////////////
 //        SERVER       //
 ////////////////////////
-
-const port = 3000
-app.listen(port, () => {
-  console.log(`App running on http://localhost:${port}`)
-})
 
 module.exports = app;
